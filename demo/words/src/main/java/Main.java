@@ -14,17 +14,25 @@ import java.util.NoSuchElementException;
 
 public class Main {
     public static int dbPopulateRetry;
+    public static HttpServer server;
     public static void main(String[] args) throws Exception {
-        dbPopulateRetry = 3;
+        dbPopulateRetry = 7;
         Class.forName("org.postgresql.Driver");
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/noun", handler(Suppliers.memoize(() -> randomWord("nouns"))));
         server.createContext("/verb", handler(Suppliers.memoize(() -> randomWord("verbs"))));
         server.createContext("/adjective", handler(Suppliers.memoize(() -> randomWord("adjectives"))));
         server.start();
     }
-
+    private static void refreshContext() throws IOException {
+        server.removeContext("/noun");
+        server.removeContext("/verb");
+        server.removeContext("/adjective");
+        server.createContext("/noun", handler(Suppliers.memoize(() -> randomWord("nouns"))));
+        server.createContext("/verb", handler(Suppliers.memoize(() -> randomWord("verbs"))));
+        server.createContext("/adjective", handler(Suppliers.memoize(() -> randomWord("adjectives"))));
+    }
     private static String populateDB() throws IOException {
         
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://db:5432/postgres", "postgres", "")) {
@@ -88,6 +96,7 @@ public class Main {
             try (OutputStream os = t.getResponseBody()) {
                 os.write(bytes);
             }
+            refreshContext();
         };
     }
 }
