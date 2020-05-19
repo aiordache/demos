@@ -6,10 +6,10 @@ services:
 
   words:
     build: words
-    image: ancaiordache/sentences-api
+    image: niftymoby/sentences-api
 
   web:
     build: web
-    image: ancaiordache/sentences-web
+    image: niftymoby/sentences-web
     ports:
       - "80:80"
