@@ -1,0 +1,32 @@
+<html>
+
+    <head>
+        <title>Hello!</title>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+    </head>
+
+    <body>
+        
+        <button type="submit" onclick="queryServer()">Query app server</button>
+        <h1>Server response</h1>
+        <div id='demo'>
+
+        </div>
+
+        <script type="text/javascript">
+        function queryServer() {
+            const Http = new XMLHttpRequest();
+            
+            Http.open("GET", "/api/");
+            Http.send();
+
+            Http.onreadystatechange = (e) => {
+                document.getElementById('demo').innerHTML = Http.responseText
+            }
+        }
+        </script>
+    
+    </body>
+
+</html>
