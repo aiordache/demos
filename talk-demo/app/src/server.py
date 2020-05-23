@@ -1,7 +1,5 @@
 import os
 import flask
-
-from flask_cors import CORS, cross_origin
 import json
 import mysql.connector
 #import ptvsd
@@ -13,7 +11,7 @@ class DBManager:
         self.connection = mysql.connector.connect(
             user=user, 
             password=pf.read(),
-            host=host, # name of the mysql service as set in the docker-compose file
+            host=host,
             database=database,
             auth_plugin='mysql_native_password'
         )
@@ -35,12 +33,9 @@ class DBManager:
 
 
 server = flask.Flask(__name__)
-cors = CORS(server, resorces={r'*': {"origins": '*'}})
-server.config['CORS_HEADERS'] = 'Content-Type'
 conn = None
 
-@server.route('/')
-@cross_origin()
+@server.route('/blogs')
 def listBlog():
     global conn
     if not conn:
@@ -48,14 +43,16 @@ def listBlog():
         conn.populate_db()
     rec = conn.query_titles()
 
-    result = ''
+    result = []
     for c in rec:
-        result = result  + '<div>   Hello  ' + c + '</div>'
-    return result
-   
-    response = flask.jsonify({"response": result})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+        result.append(c)
+
+    return flask.jsonify({"response": result})
+
+@server.route('/')
+def hello():
+    return flask.jsonify({"response": "Hello from Docker!"})
+
 
 if __name__ == '__main__':
     server.run(debug=True, host='0.0.0.0', port=5000)

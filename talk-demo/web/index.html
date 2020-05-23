@@ -1,32 +1,82 @@
 <html>
 
-    <head>
+  <head>
         <title>Hello!</title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <meta content="utf-8" http-equiv="encoding">
-    </head>
-
-    <body>
-        
-        <button type="submit" onclick="queryServer()">Query app server</button>
-        <h1>Server response</h1>
-        <div id='demo'>
+        <style>
+            *, ::after, ::before {
+              box-sizing: inherit;
+              background-color: #9eb5c2;
+              color: rgb(8, 8, 71);
+            }
+            .moby {
+              padding: 2rem 1rem;
+              margin-bottom: 2rem;
+              border-radius: .3rem;
+              border-bottom: 0;
+              text-align: center;
+              align-content: center;
+              align-items: center;
+              padding: 4rem 2rem;
+            }
+            .moby button {
+              color: #fff;
+              background-color: rgb(6, 105, 138);
+              border-color: rgb(6, 105, 138);
+              padding: 5px;
+              border-radius: 5px;
+              margin: 5px;
+            }
+            .moby .query {
+              text-align: left;
+              border: 3px dotted #e9ecef;
+              padding: 1.5rem 1.2rem;
+              max-width: 800px;
+              min-height: 200px;
+              margin-left: auto;
+              margin-right: auto;
+              border-radius: .3rem;
+            }
+            .moby .query button:hover{
+              cursor: pointer;
+              background-color: #73abff;
+            }
+        </style>
+  </head>
+  <body>
+      
+    <div class="moby"> 
+      <img src="https://www.docker.com/sites/default/files/Whale%20Logo332_5.png" />
+      <h1>Hello there!</h1>
+      <p>Simple DEV environment setup with Docker and Docker Compose</p>
+      <div class="query">
+        <p>Set url path(default is '/'), then query the app service.</p>
+        <div>
+          <button type="submit" onclick="queryServer()">GET</button>
+          <input id="path" type="text">
+        </div>
+        <h3>Server response</h3>
+        <div id="response">
 
         </div>
+      </div>
+    </div>
 
-        <script type="text/javascript">
-        function queryServer() {
-            const Http = new XMLHttpRequest();
-            
-            Http.open("GET", "/api/");
-            Http.send();
+    <script type="text/javascript">
+    function queryServer() {
+        const Http = new XMLHttpRequest();
+        const path = document.getElementById('path').value;
+        const url = "/api/";
+        Http.open("GET", url + path);
+        Http.send();
 
-            Http.onreadystatechange = (e) => {
-                document.getElementById('demo').innerHTML = Http.responseText
-            }
+        Http.onreadystatechange = (e) => {
+            document.getElementById('response').innerHTML = Http.responseText;
         }
-        </script>
-    
-    </body>
+    }
+    </script>
+  
+  </body>
 
 </html>
