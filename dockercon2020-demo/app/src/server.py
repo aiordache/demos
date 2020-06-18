@@ -2,8 +2,10 @@ import os
 import flask
 import json
 import mysql.connector
-#import ptvsd
-#ptvsd.enable_attach(address=('0.0.0.0', 3000))
+
+# for debugging from Visual Studio Code -- turn off flask debugger first
+# import ptvsd
+# ptvsd.enable_attach(address=('0.0.0.0', 3000))
 
 class DBManager:
     def __init__(self, database='example', host="db", user="root", password_file=None):

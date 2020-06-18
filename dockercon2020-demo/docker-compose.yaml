@@ -9,7 +9,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     networks:
-      - backnet
+      - backend-network
     environment:
       - MYSQL_DATABASE=example
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
@@ -19,12 +19,9 @@ services:
     restart: always
     secrets:
       - db-password
-    ports:
-      - 5000:5000
-      - 3000:3000
     networks:
-      - backnet
-      - frontnet
+      - backend-network
+      - frontend-network
 
   web:
     build: web
@@ -32,12 +29,12 @@ services:
     ports:
       - 80:80
     networks:
-      - frontnet
+      - frontend-network
 volumes:
   db-data:
 secrets:
   db-password:
     file: db/password.txt
 networks:
-  backnet:
-  frontnet:
+  backend-network:
+  frontend-network:
