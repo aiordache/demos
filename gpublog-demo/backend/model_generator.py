@@ -10,6 +10,10 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 import functools
 
+#
+# This code sample is copied from the tensorflow docs at
+# https://www.tensorflow.org/tutorials/text/nmt_with_attention
+#
 
 # Converts the unicode file to ascii
 def unicode_to_ascii(s):
