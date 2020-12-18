@@ -1,0 +1,29 @@
+services:
+  training:
+    build: backend
+    command: python model_generator.py eng-fra
+    volumes: 
+      - models:/checkpoints
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - 'driver': 'nvidia'
+            'capabilities': ['gpu']
+  
+  translator:
+    build: backend
+    volumes: 
+      - models:/checkpoints
+
+  frontend:
+    build: frontend
+    volumes:
+      - ./frontend/index.html:/usr/share/nginx/html/index.html
+    ports:
+      - 80:80
+    depends_on:
+      - translator
+
+volumes:
+  models:

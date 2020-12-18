@@ -1,0 +1,103 @@
+<html>
+
+  <head>
+        <title>Docker DEMO!</title>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <style>
+            *, ::after, ::before {
+            }
+            body {font-family: Arial, Helvetica, sans-serif;}
+            * {box-sizing: border-box;}
+
+            .moby {
+              padding: 2rem 1rem;
+              margin-bottom: 2rem;
+              border-radius: .3rem;
+              border-bottom: 0;
+              text-align: center;
+              align-content: center;
+              align-items: center;
+              padding: 4rem 2rem;
+            }
+            .text-area {
+              display: block;
+              border: 3px solid #f1f1f1;
+              z-index: 9;
+              margin: auto;
+              width: auto;
+              max-width: 800px;
+            }
+            .display-area:disabled {
+              font-size: 32px;
+              background: white;
+            }
+            .form-container {
+              padding: 10px;
+              background-color: white;
+            }
+            .form-container textarea {
+
+              font-size: 32px;
+              width: 50%;
+              padding: 15px;
+              border: none;
+              background: #f1f1f1;
+              resize: none;
+              min-height: 200px;
+            }
+            .form-container textarea:focus {
+              background-color: #ddd;
+              outline: none;
+            }
+            form-container .btn {
+              background-color: #4CAF50;
+              color: black;
+              padding: 16px 20px;
+              border: none;
+              cursor: pointer;
+              width: 100%;
+              margin-bottom:10px;
+              opacity: 0.8;
+            }
+            .form-container .btn:hover {
+              opacity: 1;
+            }
+            .row {
+              display: flex;
+              border: 3px solid #f1f1f1;
+              margin: 0 0 22px 0;
+            }
+        </style>
+  </head>
+  <body>
+    <div class="moby"> 
+      <img src="https://www.docker.com/sites/default/files/Whale%20Logo332_5.png" />
+      <h1>Docker Compose DEMO!</h1>
+      <div class="text-area" id="myForm">
+        <form action="javascript:queryServer()" class="form-container">
+          <div class="row">
+            <textarea placeholder="Type text to translate.." id="text" required></textarea>
+            <textarea class="display-area" id="translated" disabled></textarea>
+          </div>
+          <button type="submit" class="btn">Translate</button>
+        </form>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    function queryServer() {
+        const Http = new XMLHttpRequest();
+        const text = document.getElementById('text').value;
+        var params = 'text=' + text;
+        const url = "/api/";
+        Http.open("POST", url, true);
+        Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        Http.send(params);
+        Http.onreadystatechange = (e) => {
+            document.getElementById('translated').innerHTML = Http.responseText;
+        }
+    }
+    </script>  
+  </body>
+</html>
