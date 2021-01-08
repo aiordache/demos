@@ -1,19 +1,23 @@
 services:
   training:
     build: backend
-    command: python model_generator.py eng-fra
-    volumes: 
+    command: python model.py
+    environment:
+      PYTHONUNBUFFERED: 0
+    volumes:
       - models:/checkpoints
     deploy:
       resources:
         reservations:
+          memory: 16Gb
           devices:
-          - 'driver': 'nvidia'
-            'capabilities': ['gpu']
-  
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
   translator:
     build: backend
-    volumes: 
+    volumes:
       - models:/checkpoints
 
   frontend:
