@@ -1,12 +1,14 @@
 services:
 
   training:
+    image: myhubuser/gpudemo
     build: backend
     command: python model.py
     volumes:
       - models:/checkpoints
 
   translator:
+    image: myhubuser/gpudemo
     build: backend
     volumes:
       - models:/checkpoints
