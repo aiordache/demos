@@ -1,0 +1,17 @@
+services:
+
+  training:
+    build: backend
+    command: python model.py
+    volumes:
+      - models:/checkpoints
+
+  translator:
+    build: backend
+    volumes:
+      - models:/checkpoints
+    ports:
+      - 5000:5000
+
+volumes:
+  models:
