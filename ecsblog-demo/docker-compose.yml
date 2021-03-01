@@ -1,0 +1,11 @@
+services:
+  frontend:
+    image: ancaiordache/starter-front
+    build: frontend
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+  backend:
+    image: aiordache/starter-back
+    build: backend
