@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 import functools
-import requests 
+import requests
 
 #
 # This code sample is copied from the tensorflow docs at
@@ -19,7 +19,7 @@ import requests
 # Converts the unicode file to ascii
 def unicode_to_ascii(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
-                   
+
 def preprocess_sentence(w):
     w = unicode_to_ascii(w.lower().strip())
 
@@ -164,13 +164,13 @@ class TranslatorModel:
         self.checkpoint_dir = "/checkpoints/{}".format(lang)
         self.checkpoint_prefix = os.path.join(self.checkpoint_dir, "ckpt")
 
-        
+
         self._load(num_examples = 30000)
 
         self.encoder = Encoder(self.vocab_inp_size, self.embedding_dim, self.units, self.BATCH_SIZE)
         self.decoder = Decoder(self.vocab_tar_size, self.embedding_dim, self.units, self.BATCH_SIZE)
-        
-       
+
+
 
         self.checkpoint = tf.train.Checkpoint(optimizer=self.optimizer,
                                         encoder=self.encoder,
@@ -184,13 +184,13 @@ class TranslatorModel:
         lang1, lang2 = self.lang.split('-')
         if self.lang.startswith('eng-'):
             lang2, lang1 = self.lang.split('-')
-        
+
         path_to_file = "/code/data/{}.txt".format(lang1)
-        if not os.path.isfile(path_to_file): 
+        if not os.path.isfile(path_to_file):
             archive = '{}-{}.zip'.format(lang1, lang2)
             # Download the file
             path_to_zip = tf.keras.utils.get_file(
-                archive, 
+                archive,
                 origin='{}/{}'.format(self.url, archive),
                 extract=True)
 
@@ -221,7 +221,7 @@ class TranslatorModel:
         self.max_length_inp = self.input_tensor.shape[1]
         self.vocab_inp_size = len(self.inp_lang_tokenizer.word_index)+1
         self.vocab_tar_size = len(self.targ_lang_tokenizer.word_index)+1
-        
+
         # Creating training and validation sets using an 80-20 split
         input_tensor_train, input_tensor_val, target_tensor_train, target_tensor_val = train_test_split(
             self.input_tensor, self.target_tensor, test_size=0.2)
@@ -303,7 +303,7 @@ class TranslatorModel:
         dec_hidden = enc_hidden
         dec_input = tf.expand_dims([self.targ_lang_tokenizer.word_index['<start>']], 0)
 
-        for t in range(self.max_length_targ):
+        for _ in range(self.max_length_targ):
             predictions, dec_hidden, attention_weights = self.decoder(dec_input,
                                                                 dec_hidden,
                                                                 enc_out)
@@ -333,7 +333,7 @@ if __name__ == '__main__':
     lang = "eng-fra"
     if len(sys.argv) > 1:
         lang = sys.argv[1]
-    
+
     if len(sys.argv) > 2:
         epochs = int(sys.argv[2])
 
