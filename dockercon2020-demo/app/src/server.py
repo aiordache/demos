@@ -27,10 +27,7 @@ class DBManager:
 
     def query_titles(self):
         self.cursor.execute('SELECT title FROM blog')
-        rec = []
-        for c in self.cursor:
-            rec.append(c[0])
-        return rec
+        return [c[0] for c in self.cursor]
 
 
 server = flask.Flask(__name__)
@@ -44,10 +41,7 @@ def listBlog():
         conn.populate_db()
     rec = conn.query_titles()
 
-    result = []
-    for c in rec:
-        result.append(c)
-
+    result = [c for c in rec]
     return flask.jsonify({"response": result})
 
 @server.route('/')
